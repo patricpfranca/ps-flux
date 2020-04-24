@@ -1,6 +1,7 @@
 import React from "react";
 
 import AboutPage from "./AboutPage";
+import CoursesPage from "./CoursesPage";
 import Header from "./common/Header";
 import HomePage from "./HomePage";
 
@@ -8,6 +9,7 @@ function App() {
   function getPage() {
     const route = window.location.pathname;
     if (route === "/about") return <AboutPage />;
+    if (route === "/courses") return <CoursesPage />;
     return <HomePage />;
   }
 
