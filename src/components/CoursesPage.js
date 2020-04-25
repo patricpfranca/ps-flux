@@ -3,14 +3,21 @@ import { Link } from "react-router-dom";
 
 import CourseList from "./CourseList";
 
-import { getCourses } from "../api/courseApi";
+import courseStore from "../stores/courseStore";
+import { loadCourses, deleteCourses } from "../actions/courseActions";
 
 function CoursesPage() {
-  const [courses, setCourses] = useState([]);
+  const [courses, setCourses] = useState(courseStore.getCourses());
 
   useEffect(() => {
-    getCourses().then((_courses) => setCourses(_courses));
+    courseStore.addChangeListener(onChange);
+    if (courseStore.getCourses().length === 0) loadCourses();
+    return () => courseStore.removeChangeListener(onChange);
   }, []);
+
+  function onChange() {
+    setCourses(courseStore.getCourses());
+  }
 
   return (
     <>
@@ -18,7 +25,7 @@ function CoursesPage() {
       <Link className="btn btn-primary" to="/course">
         AddCourse
       </Link>
-      <CourseList {...{ courses }} />
+      <CourseList {...{ courses }} {...{ deleteCourses }} />
     </>
   );
 }
